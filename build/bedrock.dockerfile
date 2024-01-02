@@ -1,4 +1,4 @@
-FROM php:8.0-fpm as base
+FROM php:8.2-fpm as base
 LABEL name=bedrock
 LABEL intermediate=true
 
@@ -28,7 +28,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync \
   && install-php-extensions \
     @composer \
     exif \
-    gd \ 
+    gd \
     memcached \
     mysqli \
     pcntl \
@@ -60,6 +60,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
     nginx \
     nodejs \
     supervisor \
+    npm \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get clean \
@@ -69,7 +70,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
 COPY ./build/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./build/nginx/sites-enabled /etc/nginx/conf.d
 COPY ./build/nginx/sites-enabled /etc/nginx/sites-enabled
-COPY ./build/php/8.0/fpm/pool.d /etc/php/8.0/fpm/pool.d
+COPY ./build/php/8.2/fpm/pool.d /etc/php/8.2/fpm/pool.d
 COPY ./build/supervisor/supervisord.conf /etc/supervisord.conf
 
 # WordPress CLI
