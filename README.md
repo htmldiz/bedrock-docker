@@ -19,6 +19,8 @@ Run `./dev.sh` to clone `bedrock` and `sage` into `./bedrock`:
 
 Configure the `WP_HOME` and `WP_SITEURL` variables as needed in `.env`.
 
+### Before run docker make sure that you have changed containers name
+
 Build and run the container in the background:
 
 ```sh
@@ -47,6 +49,17 @@ yarn install
 yarn build
 wp theme activate sage
 ```
+
+## After container up you need modify file hosts
+
+For mac located:
+/private/etc/hosts
+
+For windows located:
+c:\Windows\System32\Drivers\etc\hosts
+
+For windows located:
+/etc/hosts
 
 ## Existing installs
 
