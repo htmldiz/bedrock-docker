@@ -22,6 +22,11 @@ Configure the `WP_HOME` and `WP_SITEURL` variables as needed in `.env`.
 Build and run the container in the background:
 
 ```sh
+docker compose up --build
+```
+
+Run the container in the background:
+```sh
 docker compose up --build -d
 ```
 
