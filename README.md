@@ -58,7 +58,7 @@ For mac located:
 For windows located:
 c:\Windows\System32\Drivers\etc\hosts
 
-For windows located:
+For linux located:
 /etc/hosts
 
 ## Existing installs

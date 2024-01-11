@@ -1,43 +1,75 @@
 version: '3.9'
 
 services:
-  mariadb:
-    image: mariadb
-    container_name: mariadb
+
+  nginx:
+    image: nginx:1.25.3-alpine
+    container_name: ${WP_PROJECT}_nginx
+    networks:
+      - bedrock
+    links:
+      - bedrock
+    volumes:
+      - ./build/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./build/nginx/sites-enabled:/etc/nginx/conf.d
+      - ./build/nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./bedrock:/srv/bedrock
+    ports:
+      - '80:80'
+    depends_on:
+      - bedrock
     restart: always
+
+  mysql:
+    image: mysql:8.0.35
+    container_name: ${WP_PROJECT}_database
+    restart: always
+    networks:
+      - bedrock
     environment:
       MYSQL_DATABASE: '${DB_NAME}'
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
     ports:
-      - 3030
+      - 3306
     volumes:
       - data:/var/lib/mysql
 
   bedrock:
     build:
       context: .
-      dockerfile: ./build/bedrock.dockerfile
-    container_name: bedrock
+      dockerfile: ./build/Dockerfile
+    container_name: ${WP_PROJECT}_app
+    networks:
+      - bedrock
     restart: always
     links:
-      - mariadb
+      - mysql
     ports:
-      - 80:80
+      - 9000
     env_file: .env
     volumes:
       - ./bedrock:/srv/bedrock
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: pma
+    container_name: ${WP_PROJECT}_pma
+    networks:
+      - bedrock
     links:
-      - mariadb
+      - mysql
     environment:
-      PMA_HOST: mariadb
+      PMA_HOST: mysql
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
     restart: always
     ports:
-      - 8080:80
+      - 8085:80
 
 volumes:
   data:
+    name: ${WP_PROJECT}_volume
+
+networks:
+  bedrock:
+    name: ${WP_PROJECT}_network
+    driver: bridge

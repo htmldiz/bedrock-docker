@@ -29,6 +29,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync \
     @composer \
     exif \
     gd \
+    xdebug \
     memcached \
     mysqli \
     pcntl \
@@ -53,11 +54,10 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync \
 FROM php as bedrock
 LABEL name=bedrock
 
-# Install nginx & supervisor
+# Install supervisor npm node yarn
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
   && apt-get update \
   && apt-get install -y \
-    nginx \
     nodejs \
     supervisor \
     npm \
@@ -66,10 +66,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
   && apt-get clean \
   && npm install -g yarn
 
-# Configure nginx, php-fpm and supervisor
-COPY ./build/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./build/nginx/sites-enabled /etc/nginx/conf.d
-COPY ./build/nginx/sites-enabled /etc/nginx/sites-enabled
+# Configure php-fpm and supervisor
 COPY ./build/php/8.2/fpm/pool.d /etc/php/8.2/fpm/pool.d
 COPY ./build/supervisor/supervisord.conf /etc/supervisord.conf
 
