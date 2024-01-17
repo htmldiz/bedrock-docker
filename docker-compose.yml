@@ -49,6 +49,9 @@ services:
     env_file: .env
     volumes:
       - ./bedrock:/srv/bedrock
+      - ./build/php/8.2/fpm/pool.d/php.ini:/usr/local/etc/php/php.ini-development
+      - ./build/php/8.2/fpm/pool.d/php.ini:/usr/local/etc/php/php.ini
+      - ./build/php/8.2/fpm/pool.d/php.ini:/usr/local/etc/php/php.ini-production
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

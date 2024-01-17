@@ -67,8 +67,8 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
   && npm install -g yarn
 
 # Configure php-fpm and supervisor
-COPY ./build/php/8.2/fpm/pool.d /etc/php/8.2/fpm/pool.d
-COPY ./build/supervisor/supervisord.conf /etc/supervisord.conf
+#COPY ./build/php/8.2/fpm/pool.d /etc/php/8.2/fpm/pool.d
+#COPY ./build/supervisor/supervisord.conf /etc/supervisord.conf
 
 # WordPress CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
